@@ -1,0 +1,221 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>任务说明</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/task/online-task-intro.css'/>
+</head>
+<body>
+
+
+<div class="tab">
+    <div class="tab-1 tab-act">任务说明</div>
+    <div class="tab-2">我的下载</div>
+</div>
+<!--tab1内容-->
+<div class="tab-1-content" >
+
+</div>
+<div class="next-step">
+    <div class="next-step-btn">开始上传</div>
+</div>
+<!--tab2内容-->
+<div class="tab-2-content" style="display: none">
+
+</div>
+
+<div id="task-detail-test">
+
+</div>
+<script type="text/html" id="tab-1-content-tpl">
+    <?var data = this.data;?>
+    <div class="flow">
+
+    </div>
+    <div class="task-detail">
+        <div class="task-detail-title">任务详情介绍</div>
+        <div class="task-detail-content">
+            <?=data.detail?>
+            <div class="task-detail-content-more">
+                查看详情
+            </div>
+        </div>
+        <div class="task-detail-content-more-unfold">收回</div>
+    </div>
+    <div class="task-step">
+        <div class="task-step-title">提交步骤示意</div>
+        <? var capitalNum = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];?>
+        <? data.onlinejob_needinfo.forEach(function(e, i){?>
+        <div class="task-step-content">
+            第<?=capitalNum[i]?>步：<?=e.intro?>
+            <? if (e.intro_pic) {?>
+            <div style="border:15px solid #eee; margin-top: 10px;">
+                <img class="task-step-content-img" src="<?=e.intro_pic_url?>" alt=""/>
+            </div>
+            <? } ?>
+        </div>
+        <? });?>
+    </div>
+    <div class="ph-next-step">
+        <div class="ph-next-step-btn">开始上传</div>
+    </div>
+
+</script>
+
+<script type="text/html" id="tab-2-content-tpl">
+    <ul class="task-list">
+        <? this.data.forEach(function(e) { ?>
+        <li class="task-list-item" data-status="<?=e.status?>" data-id="<?=e.id?>" data-reason="<?=e.reason?>">
+            <div class="task-list-item-left">
+                <?=e.created_time?>
+            </div>
+            <? var extraStyle = "";
+                if (e.status == 10) {
+                    extraStyle = "style='color:#00b966'";
+                } else if (e.status == 20) {
+                    extraStyle = "style='color:#fa4535'";
+                }
+            ?>
+            <div class="task-list-item-right" <?=extraStyle?>>
+                <?=e.status_msg?>
+            </div>
+        </li>
+        <? }); ?>
+    </ul>
+    <div class="new-task">
+        + 快速添加新任务
+    </div>
+</script>
+
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white" style="margin-top: 15%;">
+		<path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+		<path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+			<animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s" repeatCount="indefinite" />
+		</path>
+	</svg>
+
+	<div class="init-shade-text">
+		加载中
+	</div>
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="title">提示</div>
+	<div class="content">
+		<table class="content-table">
+			<tr>
+				<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+				<td class="content-text"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="alert-widget-btn"></div>
+	<div class="close-alert-dialog">x</div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+
+<script src="/v1/js_combo_min/task/online-task-intro.js" data-main="task/online-task-intro" type="text/javascript"></script>
+</body>
+</html>

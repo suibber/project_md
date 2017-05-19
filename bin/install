@@ -1,0 +1,35 @@
+#!/bin/bash
+
+curl -sS https://getcomposer.org/installer | php
+
+apt-get install -y munin-node
+
+apt-get install -y php5=5.5\*
+apt-get install -y apache2=2.4\*
+apt-get install -y php5-mysql
+apt-get install -y mysql-server-5.6
+apt-get install -y php5-gd
+apt-get install -y php5-curl
+
+apt-get install -y libxml2-dev libxslt1-dev
+apt-get install -y libffi-dev
+apt-get install -y python2.7-dev
+apt-get install -y libmysqlclient-dev
+apt-get install -y python-pip
+apt-get install -y libssl-dev
+
+a2enmod rewrite
+a2enmod proxy
+a2enmod proxy_http
+a2enmod headers
+
+pip install virtualenv
+
+mkdir spider/.env
+virtualenv spider/.env
+source spider/.env/bin/activate
+pip install scrapy==1.0.1
+pip install mysql-python==1.2.5
+pip install simplejson==3.7.3
+pip install service_identity==14.0.0
+pip install supervisor==3.1.3

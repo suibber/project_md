@@ -1,0 +1,38 @@
+.container {margin:0 auto; position:relative; clear:both;}
+#slides {display:none;position:relative;}
+.slidesjs-container{}
+.slidesjs-navigation{float:right;margin-top:10px;padding-right:5px;}
+.slidesjs-navigation a{font:bold 50px/normal simsun;text-decoration:none;color:#fff;}
+.slidesjs-previous{ position:absolute; left:0; top:35%; z-index:200}
+.slidesjs-next{ position:absolute; right:0; top:35%; z-index:200}
+.slidesjs-navigation a:hover{color:#C00}
+.slidesjs-pagination {height: 10px;margin:10px 0;padding: 10px; float:right;}
+.slidesjs-pagination li{float:left;padding:0 5px;}
+.slidesjs-pagination li a{display:block;width: 13px;height:0;padding-top:13px;background:url(../images/pagination.png) 0 0;overflow:hidden;}
+.slidesjs-pagination li a.active,.slidesjs-pagination li a:hover.active {background-position: 0 -13px}
+.slidesjs-pagination li a:hover {background-position: 0 -26px}
+@media (max-width: 767px) {
+      .container {
+        width: auto
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: auto
+      }
+	  .slidesjs-navigation{display:none;}
+    }
+
+    @media (min-width: 768px) and (max-width: 979px) {
+      .container {
+        width: 724px
+      }
+    }
+
+    /* For larger displays */
+    @media (min-width: 1000px) {
+      .container {
+        width: 867px
+      }
+    }

@@ -1,0 +1,793 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>完善简历</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/user/resume.css'/>
+
+</head>
+<div class="mdd-main">
+    <div class="tips">请您填写真实资料，增加企业信任感，提升应聘成功率！</div>
+    <div class="table-wrap" >
+        <table class="table1">
+            <tr class="name-col">
+                <td class="user-info-title ">姓名</td>
+                <td class="user-info-val no-widget">
+                    <input class="js-col-input" name="name" type="text" id="name" placeholder="点击输入"/>
+                </td>
+            </tr>
+            <tr class="show-birthday-widget">
+                <td class="user-info-title">生日</td>
+                <td class="user-info-val birthday-val " name="birthdate">
+                    <input type="date" class="birthday-input"/>
+                    <span class="js-col-td" name="birthdate" id="birthdate"></span>
+                </td>
+            </tr>
+            <tr class="dep-bottom" data-wc=".bottom-sex">
+                <td class="user-info-title" >性别</td>
+                <td class="user-info-val" id="gender_label"></td>
+            </tr>
+            <tr class="dep-bottom" data-wc=".bottom-edu">
+                <td class="user-info-title">学历</td>
+                <td class="user-info-val" id="degree_label"></td>
+            </tr>
+            <tr class="dep-bottom" data-wc=".bottom-height">
+                <td class="user-info-title">身高</td>
+                <td class="user-info-val js-col-td-for-int" name="height" id="height"></td>
+            </tr>
+            <tr class="dep-bottom" data-wc=".bottom-weight">
+                <td  class="user-info-title" >体重</td>
+                <td  class="user-info-val js-col-td-for-int" name="weight" id="weight"></td>
+            </tr>
+            <tr class="name-col">
+                <td style="border-bottom: 0" class="user-info-title no-required">学校</td>
+                <td style="border-bottom: 0" class="user-info-val no-widget">
+                    <input class="js-col-input " name="college" type="text" id="college" placeholder="点击输入"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="tips">填写以下内容，帮您匹配最合适的岗位！</div>
+    <div class="table-wrap" >
+        <table class="table2">
+            <tr class="set-address" data-wc=".right-map">
+                <td class="user-info-title no-required">居住地点</td>
+                <td class="user-info-val js-set-address" id="user-address"></td>
+            </tr>
+            <tr class="work-exp" data-wc=".sel-job-type">
+                <td class="user-info-title no-required">工作经验</td>
+                <td class="user-info-val" id="service-type"></td>
+            </tr>
+            <tr class="free-time" data-wc=".right-free-time">
+                <td class="user-info-title no-required">空闲时间</td>
+                <td class="user-info-val " ></td>
+            </tr>
+        </table>
+    </div>
+    <!--<div class="tips">提交验证资料，提升简历真实度，帮你快速上岗！</div>
+    <div class="table-wrap" >
+        <table class="table3">
+            <tr>
+                <td class="user-info-title no-required">健康证</td>
+                <td class="user-info-val"></td>
+            </tr>
+        </table>
+    </div>-->
+
+    <div class="tips">个人描述</div>
+    <div class="user-desc" data-wc=".right-desc">
+        <textarea class="js-col-input" name="intro" id="intro"  rows="3" placeholder=""></textarea>
+    </div>
+
+    <div class="submit-btn">提交</div>
+
+</div>
+
+<!--控件-->
+    <div class="right-widget right-map">
+        <div id="map-search">
+    <div class="map-search-wrap"><input type="search" name="" class="map-search-input" placeholder="点此搜索地点"/></div>
+    <div class="map-search-btn">搜索</div>
+</div>
+<div id="mdd-map"></div>
+<div class="info">
+    查询结果
+</div>
+<div id="location-list">
+    <ul id="map-list">
+    </ul>
+</div>
+<script type="text/html" id="location-list-tpl">
+    <?this.data.forEach(function(e){?>
+    <li class="location-list-item"  data-lat="<?=e.point.lat?>" data-lng="<?=e.point.lng?>">
+        <div class="location-list-item-title"><?=e.title?></div>
+        <div class="location-list-item-address">地址：<?=e.address?></div>
+    </li>
+    <?});?>
+</script>
+    </div>
+
+<div class="right-widget right-free-time">
+    <div class="tips">可以用来做兼职的时间</div>
+    <div class="free-time-control">
+        <div class="free-time-control-tips">点击星期可直接选中一行</div>
+        <div class="free-time-control-btn">全选</div>
+    </div>
+    <div class="free-time-table-wrap">
+        <table class="free-time-table" id="free-time">
+            
+            <tr>
+                <td class="week-num">周一</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周二</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周三</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周四</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周五</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周六</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+            <tr>
+                <td class="week-num">周日</td>
+                <td class="day-time">上午</td>
+                <td class="day-time">下午</td>
+                <td class="day-time">晚上</td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="right-free-time-btn">提交</div>
+</div>
+
+<div class="bottom-widget bottom-sex">
+    <div class="bottom-widget-content" id="sex-widget-content" name="gender">
+        <div class="widget-content-item" data-val="0">男</div>
+        <div class="widget-content-item" data-val="1">女</div>
+    </div>
+</div>
+<div class="bottom-widget bottom-edu">
+    <div class="bottom-widget-content" id="edu-widget-content" name="degree">
+        <div class="widget-content-item" data-val="1">初中</div>
+        <div class="widget-content-item" data-val="2">高中／中专</div>
+        <div class="widget-content-item" data-val="3">大专</div>
+        <div class="widget-content-item" data-val="4">本科</div>
+        <div class="widget-content-item" data-val="5">研究生</div>
+        <div class="widget-content-item" data-val="6">博士生</div>
+    </div>
+</div>
+<div class="bottom-widget bottom-height" >
+    <div class="bottom-widget-content" id="height-widget-content">
+        
+        <div class="widget-content-item ">140cm</div>
+        
+        <div class="widget-content-item ">141cm</div>
+        
+        <div class="widget-content-item ">142cm</div>
+        
+        <div class="widget-content-item ">143cm</div>
+        
+        <div class="widget-content-item ">144cm</div>
+        
+        <div class="widget-content-item ">145cm</div>
+        
+        <div class="widget-content-item ">146cm</div>
+        
+        <div class="widget-content-item ">147cm</div>
+        
+        <div class="widget-content-item ">148cm</div>
+        
+        <div class="widget-content-item ">149cm</div>
+        
+        <div class="widget-content-item ">150cm</div>
+        
+        <div class="widget-content-item ">151cm</div>
+        
+        <div class="widget-content-item ">152cm</div>
+        
+        <div class="widget-content-item ">153cm</div>
+        
+        <div class="widget-content-item ">154cm</div>
+        
+        <div class="widget-content-item ">155cm</div>
+        
+        <div class="widget-content-item ">156cm</div>
+        
+        <div class="widget-content-item ">157cm</div>
+        
+        <div class="widget-content-item ">158cm</div>
+        
+        <div class="widget-content-item ">159cm</div>
+        
+        <div class="widget-content-item defaultHeight">160cm</div>
+        
+        <div class="widget-content-item ">161cm</div>
+        
+        <div class="widget-content-item ">162cm</div>
+        
+        <div class="widget-content-item ">163cm</div>
+        
+        <div class="widget-content-item ">164cm</div>
+        
+        <div class="widget-content-item ">165cm</div>
+        
+        <div class="widget-content-item ">166cm</div>
+        
+        <div class="widget-content-item ">167cm</div>
+        
+        <div class="widget-content-item ">168cm</div>
+        
+        <div class="widget-content-item ">169cm</div>
+        
+        <div class="widget-content-item ">170cm</div>
+        
+        <div class="widget-content-item ">171cm</div>
+        
+        <div class="widget-content-item ">172cm</div>
+        
+        <div class="widget-content-item ">173cm</div>
+        
+        <div class="widget-content-item ">174cm</div>
+        
+        <div class="widget-content-item ">175cm</div>
+        
+        <div class="widget-content-item ">176cm</div>
+        
+        <div class="widget-content-item ">177cm</div>
+        
+        <div class="widget-content-item ">178cm</div>
+        
+        <div class="widget-content-item ">179cm</div>
+        
+        <div class="widget-content-item ">180cm</div>
+        
+        <div class="widget-content-item ">181cm</div>
+        
+        <div class="widget-content-item ">182cm</div>
+        
+        <div class="widget-content-item ">183cm</div>
+        
+        <div class="widget-content-item ">184cm</div>
+        
+        <div class="widget-content-item ">185cm</div>
+        
+        <div class="widget-content-item ">186cm</div>
+        
+        <div class="widget-content-item ">187cm</div>
+        
+        <div class="widget-content-item ">188cm</div>
+        
+        <div class="widget-content-item ">189cm</div>
+        
+        <div class="widget-content-item ">190cm</div>
+        
+        <div class="widget-content-item ">191cm</div>
+        
+        <div class="widget-content-item ">192cm</div>
+        
+        <div class="widget-content-item ">193cm</div>
+        
+        <div class="widget-content-item ">194cm</div>
+        
+        <div class="widget-content-item ">195cm</div>
+        
+        <div class="widget-content-item ">196cm</div>
+        
+        <div class="widget-content-item ">197cm</div>
+        
+        <div class="widget-content-item ">198cm</div>
+        
+        <div class="widget-content-item ">199cm</div>
+        
+        <div class="widget-content-item ">200cm</div>
+        
+        <div class="widget-content-item ">201cm</div>
+        
+        <div class="widget-content-item ">202cm</div>
+        
+        <div class="widget-content-item ">203cm</div>
+        
+        <div class="widget-content-item ">204cm</div>
+        
+        <div class="widget-content-item ">205cm</div>
+        
+        <div class="widget-content-item ">206cm</div>
+        
+        <div class="widget-content-item ">207cm</div>
+        
+        <div class="widget-content-item ">208cm</div>
+        
+        <div class="widget-content-item ">209cm</div>
+        
+        <div class="widget-content-item ">210cm</div>
+        
+    </div>
+
+</div>
+<div class="bottom-widget bottom-weight">
+    <div class="bottom-widget-content" id="weight-widget-content">
+        
+        <div class="widget-content-item ">30kg</div>
+        
+        <div class="widget-content-item ">31kg</div>
+        
+        <div class="widget-content-item ">32kg</div>
+        
+        <div class="widget-content-item ">33kg</div>
+        
+        <div class="widget-content-item ">34kg</div>
+        
+        <div class="widget-content-item ">35kg</div>
+        
+        <div class="widget-content-item ">36kg</div>
+        
+        <div class="widget-content-item ">37kg</div>
+        
+        <div class="widget-content-item ">38kg</div>
+        
+        <div class="widget-content-item ">39kg</div>
+        
+        <div class="widget-content-item ">40kg</div>
+        
+        <div class="widget-content-item ">41kg</div>
+        
+        <div class="widget-content-item ">42kg</div>
+        
+        <div class="widget-content-item ">43kg</div>
+        
+        <div class="widget-content-item ">44kg</div>
+        
+        <div class="widget-content-item ">45kg</div>
+        
+        <div class="widget-content-item ">46kg</div>
+        
+        <div class="widget-content-item ">47kg</div>
+        
+        <div class="widget-content-item ">48kg</div>
+        
+        <div class="widget-content-item ">49kg</div>
+        
+        <div class="widget-content-item ">50kg</div>
+        
+        <div class="widget-content-item ">51kg</div>
+        
+        <div class="widget-content-item ">52kg</div>
+        
+        <div class="widget-content-item ">53kg</div>
+        
+        <div class="widget-content-item ">54kg</div>
+        
+        <div class="widget-content-item ">55kg</div>
+        
+        <div class="widget-content-item ">56kg</div>
+        
+        <div class="widget-content-item ">57kg</div>
+        
+        <div class="widget-content-item ">58kg</div>
+        
+        <div class="widget-content-item ">59kg</div>
+        
+        <div class="widget-content-item defaultWeight">60kg</div>
+        
+        <div class="widget-content-item ">61kg</div>
+        
+        <div class="widget-content-item ">62kg</div>
+        
+        <div class="widget-content-item ">63kg</div>
+        
+        <div class="widget-content-item ">64kg</div>
+        
+        <div class="widget-content-item ">65kg</div>
+        
+        <div class="widget-content-item ">66kg</div>
+        
+        <div class="widget-content-item ">67kg</div>
+        
+        <div class="widget-content-item ">68kg</div>
+        
+        <div class="widget-content-item ">69kg</div>
+        
+        <div class="widget-content-item ">70kg</div>
+        
+        <div class="widget-content-item ">71kg</div>
+        
+        <div class="widget-content-item ">72kg</div>
+        
+        <div class="widget-content-item ">73kg</div>
+        
+        <div class="widget-content-item ">74kg</div>
+        
+        <div class="widget-content-item ">75kg</div>
+        
+        <div class="widget-content-item ">76kg</div>
+        
+        <div class="widget-content-item ">77kg</div>
+        
+        <div class="widget-content-item ">78kg</div>
+        
+        <div class="widget-content-item ">79kg</div>
+        
+        <div class="widget-content-item ">80kg</div>
+        
+        <div class="widget-content-item ">81kg</div>
+        
+        <div class="widget-content-item ">82kg</div>
+        
+        <div class="widget-content-item ">83kg</div>
+        
+        <div class="widget-content-item ">84kg</div>
+        
+        <div class="widget-content-item ">85kg</div>
+        
+        <div class="widget-content-item ">86kg</div>
+        
+        <div class="widget-content-item ">87kg</div>
+        
+        <div class="widget-content-item ">88kg</div>
+        
+        <div class="widget-content-item ">89kg</div>
+        
+        <div class="widget-content-item ">90kg</div>
+        
+        <div class="widget-content-item ">91kg</div>
+        
+        <div class="widget-content-item ">92kg</div>
+        
+        <div class="widget-content-item ">93kg</div>
+        
+        <div class="widget-content-item ">94kg</div>
+        
+        <div class="widget-content-item ">95kg</div>
+        
+        <div class="widget-content-item ">96kg</div>
+        
+        <div class="widget-content-item ">97kg</div>
+        
+        <div class="widget-content-item ">98kg</div>
+        
+        <div class="widget-content-item ">99kg</div>
+        
+        <div class="widget-content-item ">100kg</div>
+        
+        <div class="widget-content-item ">101kg</div>
+        
+        <div class="widget-content-item ">102kg</div>
+        
+        <div class="widget-content-item ">103kg</div>
+        
+        <div class="widget-content-item ">104kg</div>
+        
+        <div class="widget-content-item ">105kg</div>
+        
+        <div class="widget-content-item ">106kg</div>
+        
+        <div class="widget-content-item ">107kg</div>
+        
+        <div class="widget-content-item ">108kg</div>
+        
+        <div class="widget-content-item ">109kg</div>
+        
+        <div class="widget-content-item ">110kg</div>
+        
+        <div class="widget-content-item ">111kg</div>
+        
+        <div class="widget-content-item ">112kg</div>
+        
+        <div class="widget-content-item ">113kg</div>
+        
+        <div class="widget-content-item ">114kg</div>
+        
+        <div class="widget-content-item ">115kg</div>
+        
+        <div class="widget-content-item ">116kg</div>
+        
+        <div class="widget-content-item ">117kg</div>
+        
+        <div class="widget-content-item ">118kg</div>
+        
+        <div class="widget-content-item ">119kg</div>
+        
+        <div class="widget-content-item ">120kg</div>
+        
+        <div class="widget-content-item ">121kg</div>
+        
+        <div class="widget-content-item ">122kg</div>
+        
+        <div class="widget-content-item ">123kg</div>
+        
+        <div class="widget-content-item ">124kg</div>
+        
+        <div class="widget-content-item ">125kg</div>
+        
+        <div class="widget-content-item ">126kg</div>
+        
+        <div class="widget-content-item ">127kg</div>
+        
+        <div class="widget-content-item ">128kg</div>
+        
+        <div class="widget-content-item ">129kg</div>
+        
+        <div class="widget-content-item ">130kg</div>
+        
+        <div class="widget-content-item ">131kg</div>
+        
+        <div class="widget-content-item ">132kg</div>
+        
+        <div class="widget-content-item ">133kg</div>
+        
+        <div class="widget-content-item ">134kg</div>
+        
+        <div class="widget-content-item ">135kg</div>
+        
+        <div class="widget-content-item ">136kg</div>
+        
+        <div class="widget-content-item ">137kg</div>
+        
+        <div class="widget-content-item ">138kg</div>
+        
+        <div class="widget-content-item ">139kg</div>
+        
+        <div class="widget-content-item ">140kg</div>
+        
+        <div class="widget-content-item ">141kg</div>
+        
+        <div class="widget-content-item ">142kg</div>
+        
+        <div class="widget-content-item ">143kg</div>
+        
+        <div class="widget-content-item ">144kg</div>
+        
+        <div class="widget-content-item ">145kg</div>
+        
+        <div class="widget-content-item ">146kg</div>
+        
+        <div class="widget-content-item ">147kg</div>
+        
+        <div class="widget-content-item ">148kg</div>
+        
+        <div class="widget-content-item ">149kg</div>
+        
+        <div class="widget-content-item ">150kg</div>
+        
+        <div class="widget-content-item ">151kg</div>
+        
+        <div class="widget-content-item ">152kg</div>
+        
+        <div class="widget-content-item ">153kg</div>
+        
+        <div class="widget-content-item ">154kg</div>
+        
+        <div class="widget-content-item ">155kg</div>
+        
+        <div class="widget-content-item ">156kg</div>
+        
+        <div class="widget-content-item ">157kg</div>
+        
+        <div class="widget-content-item ">158kg</div>
+        
+        <div class="widget-content-item ">159kg</div>
+        
+        <div class="widget-content-item ">160kg</div>
+        
+        <div class="widget-content-item ">161kg</div>
+        
+        <div class="widget-content-item ">162kg</div>
+        
+        <div class="widget-content-item ">163kg</div>
+        
+        <div class="widget-content-item ">164kg</div>
+        
+        <div class="widget-content-item ">165kg</div>
+        
+        <div class="widget-content-item ">166kg</div>
+        
+        <div class="widget-content-item ">167kg</div>
+        
+        <div class="widget-content-item ">168kg</div>
+        
+        <div class="widget-content-item ">169kg</div>
+        
+        <div class="widget-content-item ">170kg</div>
+        
+        <div class="widget-content-item ">171kg</div>
+        
+        <div class="widget-content-item ">172kg</div>
+        
+        <div class="widget-content-item ">173kg</div>
+        
+        <div class="widget-content-item ">174kg</div>
+        
+        <div class="widget-content-item ">175kg</div>
+        
+        <div class="widget-content-item ">176kg</div>
+        
+        <div class="widget-content-item ">177kg</div>
+        
+        <div class="widget-content-item ">178kg</div>
+        
+        <div class="widget-content-item ">179kg</div>
+        
+        <div class="widget-content-item ">180kg</div>
+        
+    </div>
+</div>
+
+<script type="text/html" id="job-type-list-tpl">
+<div class="sel-job-type right-widget">
+    <div class="type-tips">
+        请选择您擅长的兼职类型（可多选）！
+    </div>
+    <div class="type-content" id="type-content">
+        <div id="job-type-scroll-container" >
+        <? var as = this.as;?>
+        <? this.list.forEach(function(e) {?>
+        <div class="type-item <?=(as.indexOf(e.name) > -1 ? 'act' : '')?>" data-code="<?=e.id?>">
+            <?=e.name?>
+        </div>
+        <? }); ?>
+        <div class="job-type-submit-btn-ph">提交</div>
+        </div>
+    </div>
+    <div class="job-type-submit-wrap">
+        <div class="job-type-submit-btn">提交</div>
+    </div>
+</div>
+</script>
+
+
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+	<img class="init-shade-img" src="/v1/img/loading2.png" alt=""/>
+	<div class="init-shade-text">
+		加载中
+	</div>
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="title">提示</div>
+	<div class="content">
+		<table class="content-table">
+			<tr>
+				<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+				<td class="content-text"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="alert-widget-btn"></div>
+	<div class="close-alert-dialog">x</div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+<script type="text/javascript" src="http://api.map.baidu.com/api?ak=GB9AZpYwfhnkMysnlzwSdRqq&v=2.0"></script>
+<script src="/v1/js_combo_min/user/resume.js" data-main="user/resume" type="text/javascript"></script>
+</body>
+</html>

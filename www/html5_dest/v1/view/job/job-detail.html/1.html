@@ -1,0 +1,170 @@
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>米多多兼职 </title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/WebViewJavascriptBridge.js" ></script>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    <script>
+        if (!window.miduoduo) { //如果app没有注入该变量，则认为不在app里
+            window.miduoduo = {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = false;
+            miduoduo.user = {};
+        } else {
+            miduoduo.user = miduoduo.user ? miduoduo.user : {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = true;
+        }
+
+        try{
+            window.localStorage = LocalStorage;
+            miduoduo.user = JSON.parse(window.localStorage.getItem("userInfo")) || miduoduo.user;
+            miduoduo.os.mddApp = true;
+        }catch(e){
+            //alert("LocalStorage ERROR : can't find android class LocalStorage. switching to raw localStorage")
+        }
+        miduoduo.api_baseurl || (miduoduo.api_baseurl = "http://api.miduoduo.cn/v1/");
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+        miduoduo.user.phone = miduoduo.user.username;
+
+        WebViewJavascriptBridge.defaultHandler(handle_action)
+       function handle_action(data, responseCallback) {
+           if (data && data.action == "b_require_auth") {
+               window.localStorage.setItem("userInfo", JSON.stringify(data.data));
+               location.reload();
+           }
+
+           var state = true;
+           var rst = {
+               action: 'q_before_quit',
+               result: {
+                   value: state,
+                   message: ''
+               }
+           }
+           responseCallback(rst);
+       };
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/job/job-detail.css'/>
+<script>seajs.use('job/job-detail')</script>
+</head>
+<body>
+<div class="login-dialog">
+    <div class="main-panel">
+        <div class="login-tips">
+            您好，报名兼职需要登录米多多！
+        </div>
+        <div class="login-btn">
+            <div class="go-reg">立即注册</div>
+            <div class="go-login">现在登录</div>
+        </div>
+        <div class="close-login-dialog">x</div>
+    </div>
+</div>
+<script type="text/html" id="main-tpl">
+    <? var data = this.data;?>
+    <div class="main">
+        <div class="part1">
+            <div class="title"><?=data.title?></div>
+            <div class="label firstLabel"><?=+data.salary + "/" + (data.salary_unit_label || "?")?></div>
+            <? data.labels.forEach(function(item){ ?>
+            <div class="label">
+                <?=item?>
+            </div>
+            <? }); ?>
+        </div>
+        <div class="part2">
+            <section>
+                <div class="sub-title">招聘人数</div>
+                <p class="info">
+                    <?=data.need_quantity?>人
+                </p>
+            </section>
+            <section>
+                <div class="sub-title">工作周期</div>
+                <p class="info">
+                    <?=data.from_date.substr(data.from_date.indexOf("-") + 1) + " 至 " + data.to_date.substr(data.to_date.indexOf("-") + 1)?>
+                    <? if (data.from_time) {?>
+                    <?=data.from_time + "-" + data.to_time?>
+                    <? } ?>
+                </p>
+            </section>
+            <section>
+                <div class="sub-title">工作地点</div>
+                <p class="info">
+                    <?=data.address?>
+                </p>
+            </section>
+        </div>
+        <div class="part4">
+            <div class="sub-title">工作内容</div>
+            <p class="info">
+                <?=data.detail?>
+            </p>
+        </div>
+        <div class="part3">
+            <div class="sub-part">
+                <div class="sub-title">公司信息</div>
+                <p class="info">
+                    <?=data.company_name || '没有记录公司名称'?> <br/>
+                    联系人：<?=data.contact?> <br/>
+                    联系方式：<?=data.contact_phonenum?> <br/>
+                </p>
+
+            </div>
+            <a class="tel" href="tel:<?=data.contact_phonenum?>">
+                <span style="visibility: hidden;font-size: 28px">电话</span> <br/>
+                电话咨询
+            </a>
+        </div>
+        <div class="part5-placeholder">
+            <div>占位</div>
+        </div>
+        <div class="part5">
+            <div class="store">
+                <div style="visibility: hidden;padding-bottom: 20%">藏</div><br/>
+                <span>收藏</span>
+            </div>
+            <div class="report">
+                <div style="visibility: hidden;padding-bottom: 20%">报</div> <br/>
+                举报
+            </div>
+            <div class="control-btn js-unapply">
+                我要报名
+            </div>
+        </div>
+    </div>
+</script>
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>-->
+<script>
+
+</script>
+</body>
+</html>

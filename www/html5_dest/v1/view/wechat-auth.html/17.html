@@ -1,0 +1,65 @@
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>米多多兼职</title>
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+
+        function parseUrlParam(url) {
+            if(url == '') return '';
+            var options = {};
+            var name,value,i;
+            var paramsStart = url.indexOf('?')+1;
+            var paramsEnd = url.indexOf('#')==-1?url.length:url.indexOf('#');
+            var str = url.slice(paramsStart, paramsEnd);
+            var arrtmp = str.split('&');
+            for(var i=0 , len = arrtmp.length;i < len;i++){
+                var paramCount = arrtmp[i].indexOf('=');
+                if(paramCount > 0){
+                    name = arrtmp[i].substring(0 , paramCount);
+                    value = arrtmp[i].substr(paramCount + 1);
+                    try{
+                        if (value.indexOf('+') > -1) value= value.replace(/\+/g,' ')
+                        options[name] = decodeURIComponent(value);
+                    }catch(exp){}
+                }
+            }
+            delete options['frm'];
+            return options;
+        }
+        var urlParam = parseUrlParam(window.location.search);
+        cookie.set("openid", JSON.parse(decodeURIComponent(urlParam.wechat)).openid);
+        if (urlParam.user) {
+            cookie.set("user", decodeURIComponent(urlParam.user));
+        }
+        window.location.replace(urlParam.origin_url);
+    </script>
+</head>
+<body></body>
+</html>

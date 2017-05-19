@@ -1,0 +1,1 @@
+!function($){$.mobiscroll.themes.ios7={dateOrder:"MMdyy",rows:5,height:34,minWidth:55,headerText:!1,showLabel:!1,btnWidth:!1,useShortLabels:!0}}(jQuery);

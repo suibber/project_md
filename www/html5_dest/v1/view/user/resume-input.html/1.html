@@ -1,0 +1,266 @@
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>米多多兼职 </title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/WebViewJavascriptBridge.js" ></script>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    <script>
+        if (!window.miduoduo) { //如果app没有注入该变量，则认为不在app里
+            window.miduoduo = {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = false;
+            miduoduo.user = {};
+        } else {
+            miduoduo.user = miduoduo.user ? miduoduo.user : {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = true;
+        }
+
+        try{
+            window.localStorage = LocalStorage;
+            miduoduo.user = JSON.parse(window.localStorage.getItem("userInfo")) || miduoduo.user;
+            miduoduo.os.mddApp = true;
+        }catch(e){
+            //alert("LocalStorage ERROR : can't find android class LocalStorage. switching to raw localStorage")
+        }
+        miduoduo.api_baseurl || (miduoduo.api_baseurl = "http://api.miduoduo.cn/v1/");
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+        miduoduo.user.phone = miduoduo.user.username;
+
+        WebViewJavascriptBridge.defaultHandler(handle_action)
+       function handle_action(data, responseCallback) {
+           if (data && data.action == "b_require_auth") {
+               window.localStorage.setItem("userInfo", JSON.stringify(data.data));
+               location.reload();
+           }
+
+           var state = true;
+           var rst = {
+               action: 'q_before_quit',
+               result: {
+                   value: state,
+                   message: ''
+               }
+           }
+           responseCallback(rst);
+       };
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/user/resume-input.css'/>
+<script>seajs.use('user/resume-input')</script>
+</head>
+<body>
+<script type="text/html" id="main1-tpl">
+    <div class="main1">
+        <div class="tips">
+            填写个人简介，职位直接匹配
+        </div>
+
+        <ul class="resume-part1">
+            <!--<li >
+                <div class="title">照片</div>
+                <div class="con control">
+                    <input name="avatar" class="js-col" type="text"  placeholder="请上传个人照片"/>
+                </div>
+            </li>-->
+            <li>
+                <div class="title">姓名</div>
+                <div class="con">
+                    <input name="name" type="text" class="js-col" placeholder="请输入真实姓名"/>
+                </div>
+            </li>
+            <li>
+                <div class="title ">出生年月</div>
+                <div class="con control">
+                    <input readonly name="birthdate" type="text" class="js-col js-birthday" placeholder="请选择真实日期"/>
+                </div>
+            </li>
+            <li>
+                <div class="title">性别</div>
+                <div class="con sex js-special-col" name="gender_label">
+                    <div class="sex-act" data-val="0">男</div>
+                    <div data-val="1">女</div>
+                </div>
+            </li>
+            <li>
+                <div class="title">身高</div>
+                <div class="con tag">
+                    <input name="height" type="tel" class="js-col" placeholder="请输入身高"/>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="resume-part2">
+            <li>
+                <div class="title">学校</div>
+                <div class="con">
+                    <input name="college" type="text"  class="js-col" placeholder="请输入学校"/>
+                </div>
+            </li>
+            <li>
+                <div class="title">居住地点</div>
+                <div class="con control js-set-address">
+                    <input readonly type="text" placeholder="请选择居住地点"/>
+                </div>
+            </li>
+        </ul>
+        <!--<div class="next-btn">下一步</div>-->
+    </div>
+</script>
+
+<script type="text/html" id="main2-tpl">
+    <div class="main2">
+        <!--<div class="tips">
+            补充兼职意向，推荐职位更靠谱
+        </div>-->
+        <ul class="resume-part3">
+            <li class="sub1">
+                <div class="title">可兼类别</div>
+                <div class="con control js-sel-service-type">
+                    <span class="service-type-show"></span>
+                    <input type="text" readonly placeholder="请选择您擅长的兼职类别"/>
+                </div>
+            </li>
+            <li class="sub2">
+                <div class="title">更在意的</div>
+                <div class="con" name="job_wishes">
+                    <div class="sub2-con-val sub2-con-val-act">获得工作经验</div>
+                    <div class="sub2-con-val">实习证明</div>
+                    <div class="sub2-con-val">赚零花钱</div>
+                    <div class="sub2-con-val">开阔视野</div>
+                </div>
+            </li>
+            <!--<li class="sub3">
+                <div class="title">微信账号</div>
+                <div class="con">
+                    <input type="text" placeholder="请输入您在用的微信账号"/>
+                </div>
+            </li>-->
+        </ul>
+        <ul class="resume-part4">
+            <li>
+                <div class="title">
+                    <div class="t1">可兼职时间</div>
+                    <div class="t2 freetime-all">全选</div>
+                </div>
+                <div class="con">
+                    <?
+                        var indexLen = 7;
+                        var numConvert = ["一", "二", "三", "四", "五", "六", "日"];
+                        for (var i = 0; i < indexLen; i++ ) {
+                    ?>
+                    <div class="dateCol <?if(i==0){?>first-col<?}?>">
+                        <div class="dateTitle">周<?=numConvert[i]?></div>
+                        <div class="time">上午</div>
+                        <div class="time">下午</div>
+                        <div class="time">晚上</div>
+                    </div>
+                    <? } ?>
+                </div>
+            </li>
+        </ul>
+        <div class="submit-btn">提交</div>
+    </div>
+</script>
+<script type="text/html" id="job-type-list-tpl">
+<div class="sel-job-type">
+    <div class="type-tips">
+        请选择您擅长的兼职类型（可多选）！
+    </div>
+    <div class="type-content">
+        <? var as = this.as;?>
+        <? this.list.forEach(function(e) {?>
+        <div class="type-item <?=(as.indexOf(e.name) > -1 ? 'act' : '')?>" data-code="<?=e.id?>">
+            <?=e.name?>
+        </div>
+        <? }); ?>
+    </div>
+    <div class="type-submit-placeholder" style="position: static; background: #fff">
+        <div class="submit-btn-placeholder">
+            返回
+        </div>
+    </div>
+    <div class="type-submit">
+        <div class="submit-btn">
+            返回
+        </div>
+    </div>
+
+</div>
+</script>
+
+<!--初始化构建dom-->
+<!--滚动的的时候构建dom-->
+<!--选年或月的时候-->
+<div class="shade-widget"></div>
+<div class="calendar-widget">
+    <div class="part1">
+        <div class="year">
+            <div class="pre-y"><</div>
+            <div class="curr-y">1987</div>
+            <div class="next-y">></div>
+        </div>
+        <div class="month">
+            <div class="pre-m"><</div>
+            <div class="curr-m">8月</div>
+            <div class="next-m">></div>
+        </div>
+    </div>
+    <div class="part2">
+        <div class="dayName">
+            <div>日</div>
+            <div>一</div>
+            <div>二</div>
+            <div>三</div>
+            <div>四</div>
+            <div>五</div>
+            <div>六</div>
+        </div>
+        <div class="dayNum">
+
+        </div>
+        <div class="year-slide">
+            <ul class="year-panel-container" ></ul>
+        </div>
+        <ul class="month-panel-container">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+        </ul>
+    </div>
+    <div class="bottom-btn">
+        <div class="cancel">取消</div>
+        <div class="ensure">确定</div>
+    </div>
+</div>
+
+</body>
+</html>

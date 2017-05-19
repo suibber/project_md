@@ -1,0 +1,10 @@
+
+ps aux | grep "php -S" | awk -F' ' '{print $2}' | xargs -I % kill %
+php -S 0.0.0.0:9999 -t ./m/web/ &
+php -S 0.0.0.0:9998 -t ./frontend/web/ &
+php -S 0.0.0.0:9997 -t ./backend/web/ &
+php -S 0.0.0.0:9996 -t ./api/web/ &
+php -S 0.0.0.0:9995 -t ./corp/web/ &
+php -S 0.0.0.0:9994 -t ./html5_dest &
+php -S 0.0.0.0:9993 -t /service/data/media &
+php -S 0.0.0.0:9992 -t ./model/web/ &

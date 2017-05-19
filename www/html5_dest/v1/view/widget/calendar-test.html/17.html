@@ -1,0 +1,139 @@
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>米多多兼职</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/widget/calendar.css'/>
+
+<body>
+
+<!--初始化构建dom-->
+<!--滚动的的时候构建dom-->
+<!--选年或月的时候-->
+<div class="calendar-widget">
+    <div class="part1">
+        <div class="year">
+            <div class="pre-y"><</div>
+            <div class="curr-y">1987</div>
+            <div class="next-y">></div>
+        </div>
+        <div class="month">
+            <div class="pre-m"><</div>
+            <div class="curr-m">8月</div>
+            <div class="next-m">></div>
+        </div>
+    </div>
+    <div class="part2">
+        <div class="dayName">
+            <div>日</div>
+            <div>一</div>
+            <div>二</div>
+            <div>三</div>
+            <div>四</div>
+            <div>五</div>
+            <div>六</div>
+        </div>
+        <div class="dayNum">
+
+        </div>
+        <div class="year-panel">
+            <ul class="year-panel-container" style="-webkit-transform: translate3d(-88.8%, 100%, 0);"></ul>
+        </div>
+        <ul class="month-panel-container">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>11</li>
+            <li>12</li>
+        </ul>
+    </div>
+    <div class="part3">
+
+    </div>
+    <div class="part4"></div>
+</div>
+
+</body>
+</html>

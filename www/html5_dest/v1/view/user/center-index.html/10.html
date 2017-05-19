@@ -1,0 +1,104 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>个人中心</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/WebViewJavascriptBridge.js" ></script>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    <script>
+        if (!window.miduoduo) { //如果app没有注入该变量，则认为不在app里
+            window.miduoduo = {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = false;
+            miduoduo.user = {};
+        } else {
+            miduoduo.user = miduoduo.user ? miduoduo.user : {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = true;
+        }
+
+        try{
+            window.localStorage = LocalStorage;
+            miduoduo.user = JSON.parse(window.localStorage.getItem("userInfo")) || miduoduo.user;
+            miduoduo.os.mddApp = true;
+        }catch(e){
+            //alert("LocalStorage ERROR : can't find android class LocalStorage. switching to raw localStorage")
+        }
+        miduoduo.api_baseurl || (miduoduo.api_baseurl = "http://api.miduoduo.cn/v1/");
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+        miduoduo.user.phone = miduoduo.user.username;
+
+        WebViewJavascriptBridge.defaultHandler(handle_action)
+       function handle_action(data, responseCallback) {
+           if (data && data.action == "b_require_auth") {
+               window.localStorage.setItem("userInfo", JSON.stringify(data.data));
+               window.WebViewJavascriptBridge.send({action : "b_refresh_all", data : {}}, null);
+           }
+
+           var state = true;
+           var rst = {
+               action: 'q_before_quit',
+               result: {
+                   value: state,
+                   message: ''
+               }
+           }
+           responseCallback(rst);
+       };
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/user/center-index.css'/>
+<script>seajs.use('user/center-index')</script>
+</head>
+<body>
+    <div class="state">
+            <img src="/v1/img/user/default-avatar.jpg" alt=""/>
+            <span   class="register" style="display: none">注册</span>
+            <span class="login" style="display: none">登录</span>
+    </div>
+    <div class="nav">
+        <a class="item cc" href="view/user/my-job.html">我的兼职</a>
+        <a class="item cc" href="view/user/my-store.html">我的收藏</a>
+        <a class="item js-my-resume" href="view/user/resume-preview.html">我的简历</a>
+    </div>
+    <div class="contact-us item" href="view/user/contact-us.html">联系我们</div>
+
+    <!--已登录tpl-->
+    <script type="text/html" id="already-login-tpl">
+        <img src="<?=this.user.avatar?>" alt=""/>
+        <span   class="name"><?=this.user.name?></span>
+        <span class="phone"><?=this.user.phone?></span>
+    </script>
+
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/wap/tuan/gotop.png" />
+</span>-->
+<script>
+
+</script>
+</body>
+</html>

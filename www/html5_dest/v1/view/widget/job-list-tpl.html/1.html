@@ -1,0 +1,43 @@
+<div class="job-list-widget">
+    <div class="jobs-container"></div>
+    <div class="pullUp">
+        加载中...
+    </div>
+    <div class="no-data">没有数据</div>
+</div>
+<!--职位列表模板-->
+<script type="text/html" id="job-list-tpl">
+    <? if (this.jobs && this.jobs.length > 0) {?>
+    <div class="jobList">
+        <? var showOthers = this.showOthers;?>
+        <? this.jobs.forEach(function(e) { ?>
+        <? var task = e.task ? e.task : e;?>
+        <a href="view/job/job-detail.html?task=<?=task.id?>">
+            <div class="part1">
+                <div class="title"><?=task.title?></div>
+                <?
+                    var ct = new Date(task.created_time);
+                    var pubDate = ct.getMonth()+1 + "-" + ct.getDate();
+                ?>
+                <div class="pub-time"><?=pubDate?></div>
+            </div>
+            <div class="part2">
+                <div class="firstDiv"><?=+task.salary + "元/" + (task.salary_unit_label || "?")?></div>
+                <? task.labels && task.labels.forEach(function(label, i){?>
+                <?if (label) {?>
+                <div ><?=label?></div>
+                <? } ?>
+                <? }); ?>
+            </div>
+        </a>
+        <? if (showOthers) {?>
+        <div class="others" data-gid="<?=task.id?>">
+            <div class="status"><?=e.status_label?></div>
+            <div class="report"> <span style="visibility: hidden">x</span><br/>举报</div>
+            <a class="tel" href="tel:<?=task.contact_phonenum?>"><span style="visibility: hidden">x</span><br/>联系企业</a>
+        </div>
+        <? } ?>
+        <? }); ?>
+    </div>
+    <? } ?>
+</script>

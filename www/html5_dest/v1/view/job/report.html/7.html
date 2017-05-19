@@ -1,0 +1,79 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>职位举报</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/WebViewJavascriptBridge.js" ></script>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    <script>
+        if (!window.miduoduo) { //如果app没有注入该变量，则认为不在app里
+            window.miduoduo = {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = false;
+            miduoduo.user = {};
+        } else {
+            miduoduo.user = miduoduo.user ? miduoduo.user : {};
+            miduoduo.os  = {};
+            miduoduo.os.mddApp = true;
+        }
+
+        try{
+            window.localStorage = LocalStorage;
+            miduoduo.user = JSON.parse(window.localStorage.getItem("userInfo")) || miduoduo.user;
+            miduoduo.os.mddApp = true;
+        }catch(e){
+            //alert("LocalStorage ERROR : can't find android class LocalStorage. switching to raw localStorage")
+        }
+        miduoduo.api_baseurl || (miduoduo.api_baseurl = "http://api.miduoduo.cn/v1/");
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+        miduoduo.user.phone = miduoduo.user.username;
+
+        WebViewJavascriptBridge.defaultHandler(handle_action)
+       function handle_action(data, responseCallback) {
+           if (data && data.action == "b_require_auth") {
+               window.localStorage.setItem("userInfo", JSON.stringify(data.data));
+               window.WebViewJavascriptBridge.send({action : "b_refresh_all", data : {}}, null);
+           }
+
+           var state = true;
+           var rst = {
+               action: 'q_before_quit',
+               result: {
+                   value: state,
+                   message: ''
+               }
+           }
+           responseCallback(rst);
+       };
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/job/report.css'/>
+<script>seajs.use('job/report')</script>
+</head>
+<body>
+<textarea class="content" placeholder="任何意见和问题，请填入此处，我们会及时与您联系"></textarea>
+<input class="tel" type="tel" placeholder="请输入您的联系方式">
+</input>
+<div class="btn-submit">提交</div>
+
+</body>
+</html>

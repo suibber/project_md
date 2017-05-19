@@ -1,0 +1,1 @@
+window.MDDNative={auth:function(){},user:function(){return{}},pop:function(){},address:function(){},location:function(){},photo:function(){},baseUrl:function(){}};

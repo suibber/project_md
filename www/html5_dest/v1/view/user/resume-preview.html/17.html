@@ -1,0 +1,231 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>简历预览</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/user/resume-preview.css'/>
+<script>seajs.use('user/resume-preview')</script>
+</head>
+<body>
+<!--
+<div id="wechat-top-bar">
+    <div id="page-back">
+        <span style="visibility: hidden"><</span>
+    </div>
+    简历预览
+    <a id="index-page" href="/v1/view/index.html">首页</a>
+</div>
+<div class="we-chat-top-bar-placeholder">
+
+</div>-->
+
+<script type="text/html" id="main-tpl">
+    <? var user = this.user;?>
+    <div class="main1">
+
+        <ul class="resume-part1">
+            <!--<li >
+                <div class="title">照片</div>
+                <div class="con ">
+                    <img src="<?=user.avatar?>" alt=""/>
+                </div>
+            </li>-->
+            <li>
+                <div class="title">姓名</div>
+                <div class="con">
+                    <?=user.name?>
+                </div>
+            </li>
+            <li>
+                <div class="title ">出生年月</div>
+                <div class="con ">
+                    <?=user.birthdate ?>
+                </div>
+            </li>
+            <li>
+                <div class="title">性别</div>
+                <div class="con sex">
+                    <?=user.gender_label ?>
+                </div>
+            </li>
+            <li>
+                <div class="title">身高</div>
+                <div class="con tag">
+                    <?=user.height ?>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="resume-part2">
+            <li>
+                <div class="title">学校</div>
+                <div class="con ">
+                    <?=user.college ?>
+                </div>
+            </li>
+            <li>
+                <div class="title">居住地点</div>
+                <div class="con ">
+                    <?=user.home_address ? user.home_address.address : ""?>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main2">
+        <ul class="resume-part3">
+            <li class="sub1">
+                <div class="title">兼职意向</div>
+                <div class="con service-type-show">
+                    <? user.service_types && user.service_types.forEach(function(type) {?>
+                    <?=type.name?>
+                    <? });?>
+                </div>
+            </li>
+            <li class="sub2">
+                <div class="title">更在意的</div>
+                <div class="con">
+
+                </div>
+            </li>
+            <!--<li class="sub3">
+                <div class="title">微信账号</div>
+                <div class="con">
+                </div>
+            </li>-->
+        </ul>
+        <ul class="resume-part4">
+            <li>
+                <div class="title">
+                    <div class="t1">可兼职时间</div>
+                </div>
+                <div class="con">
+                    <?
+                        var indexLen = 7;
+                        var numConvert = ["一", "二", "三", "四", "五", "六", "日"];
+                        for (var i = 0; i < indexLen; i++ ) {
+                    ?>
+                    <div class="dateCol <?if(i==0){?>first-col<?}?>">
+                        <div class="dateTitle">周<?=numConvert[i]?></div>
+                        <div class="time">上午</div>
+                        <div class="time">下午</div>
+                        <div class="time">晚上</div>
+                    </div>
+                    <? } ?>
+                </div>
+            </li>
+        </ul>
+        <div class="submit-btn">修改简历</div>
+    </div>
+</script>
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="alert-widget-content"></div>
+	<div class="alert-widget-btn"></div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<td><img src="/v1/img/mascot.png" alt=""/></td>
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+<script>
+
+</script>
+</body>
+</html>

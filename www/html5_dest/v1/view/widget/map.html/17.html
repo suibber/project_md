@@ -1,0 +1,20 @@
+<div id="map-search">
+    <div class="map-search-wrap"><input type="search" name="" class="map-search-input" placeholder="点此搜索地点"/></div>
+    <div class="map-search-btn">搜索</div>
+</div>
+<div id="mdd-map"></div>
+<div class="info">
+    查询结果
+</div>
+<div id="location-list">
+    <ul id="map-list">
+    </ul>
+</div>
+<script type="text/html" id="location-list-tpl">
+    <?this.data.forEach(function(e){?>
+    <li class="location-list-item"  data-lat="<?=e.point.lat?>" data-lng="<?=e.point.lng?>">
+        <div class="location-list-item-title"><?=e.title?></div>
+        <div class="location-list-item-address">地址：<?=e.address?></div>
+    </li>
+    <?});?>
+</script>

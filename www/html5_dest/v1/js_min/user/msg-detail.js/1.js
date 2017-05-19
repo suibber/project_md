@@ -1,0 +1,1 @@
+define(function(require,exports){require("zepto");var api=(require("../widget/scroll-load"),require("../widget/api")),tpl=require("../widget/tpl-engine"),urlHandle=require("../widget/url-handle"),msgType=urlHandle.getParams(window.location.search)["msg-type"];$.get(api.gen(msgType),function(data){console.log(data),$("body").append(tpl.parse("msg-list-tpl",{msgs:data.items}))})});

@@ -1,0 +1,44 @@
+<!--职位过滤组件-->
+<div class="job-filter">
+    <a  class="filter-item item1 js-district-btn js-mix-tf">排序</a>
+    <a  class="filter-item item2 js-job-type-btn js-job-type-tf">兼职类型</a>
+    <a  class="filter-item item3 js-sort-btn js-work-time-tf">时间</a>
+    <div class="job-filter-list">
+    </div>
+</div>
+<div class="user-location">
+没有定位到您的位置
+</div>
+<!--区域列表-->
+<script type="text/html" id="district-list-tpl">
+    <ul class="district-list js-top-filter-btn" data-btn="js-district-btn">
+        <li data-sort="default">综合排序</li>
+        <li class="distance-query" data-sort="distance">按距离由近到远</li>
+        <li data-sort="time">按开工时间由近到远</li>
+    </ul>
+</script>
+<!--兼职类型列表-->
+<script type="text/html" id="job-type-list-tpl" >
+    <div class="job-type-list-container js-top-filter-btn">
+        <ul class="job-type-list" data-btn="js-job-type-btn">
+            <!--<li data-all="service-type">全部</li>-->
+            <? this.list.forEach(function(item){ ?>
+            <li id="type-<?=item.id?>" data-uid="<?=item.id?>"><?=item.name?></li>
+            <? }); ?>
+        </ul>
+        <div class="job-type-list-col">
+            <div class="job-type-list-col-tips">(可多选)</div>
+            <span class="job-type-list-col-cancel" data-act-class="">清 除</span>
+            <span class="job-type-list-col-sure">确 定</span>
+        </div>
+    </div>
+
+</script>
+<!--排序列表-->
+<script type="text/html" id="sort-list-tpl" >
+    <ul class="sort-list js-top-filter-btn">
+        <li data-sort="all">全部</li>
+        <li data-sort="weekend">周六日</li>
+        <li data-sort="week">本周</li>
+    </ul>
+</script>

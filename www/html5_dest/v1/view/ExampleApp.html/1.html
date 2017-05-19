@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="format-detection" content="email=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" />
+        
+        <script>
+            
+        
+        function alertView() {
+            var action = 'b_alert';
+            var data = { 'title': '升级提示', 'message': '米多多兼职 。dd。。。', 'operation':{'cancel':' － 取消 －','ok':' － 确定 －'}}
+            
+            var json = {'action':action, 'data' : data }
+            window.WebViewJavascriptBridge.send(json, function (result) {
+                // document.getElementById("show").innerHTML = "data = " + result;
+                alert('action: ' + result.action )
+
+                document.getElementById("show").innerHTML = 'llll: '+window.miduoduo.user;
+            });
+        }
+
+        function hud() {
+            var action = 'b_toast_alert';
+            var data = { 'message': '恭喜你！ 登录 成功！', 'disappear_delay':3}
+            
+            var json = {'action':action, 'data' : data }
+            window.WebViewJavascriptBridge.send(json, function (result) {
+                alert('action: ' + result.action + ' -- result: ' + result.result)
+            });
+        }
+
+        function address() {
+            var action = 'b_get_address';
+            var data = {'title': '附近地点'}
+            var json = {'action':action,'data' : data}
+            window.WebViewJavascriptBridge.send(json, function (result) {
+                alert('name: ' + result.name + 
+                    '\n address: ' + result.address  + 
+                    '\n city: ' + result.city + 
+                    '\n location: {' + result.latitude + ',' + result.longitude + '}')
+            });
+        }
+
+        function pushView() {
+            var action = 'b_push';
+            var data = {'has_nav':true ,'has_tab':false , 'title': 'push 新页面', 'url':'http://192.168.1.217/NewPage.html',
+                        'left_action': {'title': '消息' ,'action': {'action':'left_action','data' : 'left 按钮点击'} },
+                    'right_action': {'title': '消息' ,'action': {'action':'right_action','data' : '右边按钮点击'} }}
+
+            var json = {'action':action,'data' : data}
+            window.WebViewJavascriptBridge.send(json, function (result) {
+                alert(' 返回 。。。。。');
+            });
+        }
+
+        function pushViewNo() {
+            var action = 'b_push';
+            var data = {'has_nav':true ,'has_tab':true , 'title': 'push 新页面', 'url':'http://192.168.1.217/NewPage.html',
+                    'right_action': {'title': '消息' ,'action': {'action':'right_action','data' : '右边按钮点击'} }}
+                    
+            var json = {'action':action,'data' : data}
+            window.WebViewJavascriptBridge.send(json, function (result) {
+                alert(' 返回 。。。。。');
+            });
+        }
+
+        
+        function refreshView() {
+            var action = 'b_start_processing';
+            var data = { 'message': '刷新中 ...'}
+            
+            var json = {'action':action, 'data' : data }
+            WebViewJavascriptBridge.send(json, function (result) {
+            });
+
+            window.setTimeout(hiddenView,5000);
+        }
+
+        function hiddenView() {
+            var action = 'b_stop_processing';
+            
+            document.getElementById("show").innerHTML = "-- b_stop_processing -- " ;
+            var json = {'action':action, 'data':'ddd'}
+            WebViewJavascriptBridge.send(json, function (result) {
+            });
+        }
+
+        function gotoLogin() {
+            var action = 'b_require_auth';
+            var data = { 'message': '查看需要登录'}
+            
+            var json = {'action':action, 'data' : data }
+            WebViewJavascriptBridge.send(json, function (result) {
+                alert('action: ' + result.action + ' -- result: ' + result.result.access_token)
+            });
+        }
+
+
+        //按钮事件
+        function onBkJsBridgeReady() {
+            
+
+            WebViewJavascriptBridge.defaultHandler(
+                function(data,responseCallback) {
+
+                    var message = JSON.parse(data);
+
+                    
+                    
+
+                    if (message.action == 'q_before_quit') {
+                        var r=confirm("native 按下了返回键");
+
+                        if (r==true) { 
+                            data = { 'value':true,'message': '不能退出。。。。'}
+                        } else {
+                            data = { 'value':false,'message': '不能退出。。。。'}
+                        }
+
+                        var action = 'q_before_quit';
+                        var json = {'action':action, 'result' : data }
+                        responseCallback(json);
+                    } else {
+                        if (data.action == 'b_login') {
+                            alert('登录结果 。。。。' + data.result);
+                        } else {
+
+                        }
+
+                    }
+
+                    if (data.action == 'left_action') {
+                        alert('----' + data.data);
+                    }
+
+                    if (data.action == 'right_action') {
+                        alert('--=====--' + data.data);
+                    }
+
+                });
+
+        document.getElementById("userInfo").innerHTML = 'ooooo: '+window.miduoduo.user;
+        };
+    	
+        //连接JSBridge
+        if (window.WebViewJavascriptBridge) {
+            onBkJsBridgeReady()
+        } else {
+            document.addEventListener('WebViewJavascriptBridgeReady', function() {
+                onBkJsBridgeReady()
+            }, false)
+
+            
+        }                            	
+        </script>
+    </head>
+    <body>
+     <p>
+            <xmp id="show">
+            </xmp>
+        </p>
+            <p>
+            <xmp id="userInfo">
+            </xmp>
+        </p>
+        <div style="width:80%;margin:50px auto;">
+            <button id="alertView" style="width:100%;" onclick="alertView()">－－ b_alert - 提示框 －－</button> </p>
+            <button id="hud" style="width:100%;" onclick="hud()">－－ b_toast_alert - 提4444醒内容 －－</button> </p>
+            <button id="address" style="width:100%;" onclick="address()">－－ b_get_address - 附近地点 －－</button> </p>
+
+            <button id="pushView" style="width:100%;" onclick="pushView()">－－ push 一22222个新页面,显示导航栏 －－</button> </p>
+            <button id="pushViewNo" style="width:100%;" onclick="pushViewNo()">－－ push 一个新页面，带返回 －－</button> </p>
+
+
+            <button id="popView" style="width:100%;" onclick="refreshView()">－－ b_start_processing&b_stop_processing －－</button> </p>
+            <!-- <button id="popViewNo" style="width:100%;" onclick="hiddenView()">－－ 隐藏刷新界面－－</button> </p> -->
+
+            <button id="gotoLogin" style="width:100%;" onclick="gotoLogin()">－－ b_require_auth － 是否去登录－－</button> </p>
+            
+        </div>
+        
+    </body>
+</html>

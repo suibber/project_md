@@ -1,0 +1,1 @@
+define(function(require,exports,module){if(require("zepto-ext"),require("../widget/biz/job-filter"),miduoduo.os.wx){var wxShare=require("../wechat/share");wxShare.bind({})}});

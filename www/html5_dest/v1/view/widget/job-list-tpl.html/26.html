@@ -1,0 +1,61 @@
+<div class="job-list-widget">
+    <div class="jobs-container"></div>
+    <div class="pullUp">
+        加载中...
+    </div>
+    <div class="no-data">没有数据</div>
+</div>
+<!--职位列表模板-->
+<script type="text/html" id="job-list-tpl">
+    <? if (this.jobs && this.jobs.length > 0) {?>
+        <? var showOthers = this.showOthers;?>
+        <? this.jobs.forEach(function(e) { ?>
+        <? var task = e.task ? e.task : e;?>
+        <? var url = "view/job/job-detail.html";?>
+        <a href="mdd:///v1/<?=url?>?task=<?=task.id?>">
+            <div class="item-left">
+                <div class="task-type <?='st-' + task.service_type.id?>">
+                    <?var sn = task.service_type.name;?>
+                    <?if(sn.length > 3) {?>
+                        <div style="margin-top: 8px; line-height: 15px"><?=sn.substring(0,2)?><br/><?=sn.substr(2)?></div>
+                    <? } else { ?>
+                        <?=sn?>
+                    <? } ?>
+                </div>
+            </div>
+            <div class="item-right">
+                <div class="part1">
+                    <div class="title"><?=task.title?></div>
+                    <?
+                        var ct = new Date(task.created_time);
+                        var pubDate = ct.getMonth()+1 + "-" + ct.getDate();
+                    ?>
+                </div>
+                <div class="part2">
+                    <div class="firstDiv"><?=(+task.salary) + "元/" + (task.salary_unit_label || "?")?></div>
+                    <?if(task.clearance_period_label) {?>
+                    <div class="period-label"><?=task.clearance_period_label?></div>
+                    <? } ?>
+                    <? if (e.distance || task.distance) {?>
+                    <div class="job-distance"> <span style="visibility: hidden">距离</span><?= e.distance_label || task.distance_label?></div>
+                    <? } ?>
+                </div>
+            </div>
+            <? if (task.is_overflow) {?>
+            <img class="job-overflow" src="/v1/img/job/overflow.png" alt=""/>
+            <? } ?>
+        </a>
+        <? if (showOthers) {?>
+        <div class="others" data-gid="<?=task.id?>">
+            <div class="report">举报</div>
+            <a class="tel" href="tel:<?=task.contact_phonenum?>">联系企业</a>
+            <?if (task.service_type.id == 17) {?>
+            <a class="status go-online-task" href="mdd:///v1/view/task/online-task-intro.html?task_id=<?=task.id?>&from=down">我的下载</a>
+            <? } else { ?>
+            <div class="status"><?=e.status_label?></div>
+            <? } ?>
+        </div>
+        <? } ?>
+        <? }); ?>
+    <? } ?>
+</script>

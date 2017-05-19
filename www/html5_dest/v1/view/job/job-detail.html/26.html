@@ -1,0 +1,321 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>职位详情</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/job/job-detail.css'/>
+
+</head>
+<body>
+<!--
+<div id="wechat-top-bar">
+    <div id="page-back">
+        <span style="visibility: hidden"><</span>
+    </div>
+    职位详情
+    <a id="index-page" href="/v1/view/index.html">首页</a>
+</div>
+<div class="we-chat-top-bar-placeholder">
+
+</div>-->
+
+<div class="part5">
+    <!--<div class="store">
+        <div style="visibility: hidden;padding-bottom: 20%">藏</div><br/>
+        <span>收藏</span>
+    </div>-->
+    <div class="report">
+        举报
+    </div>
+    <div class="share">
+        推荐给好友
+    </div>
+    <div class="control-btn js-unapply">
+        <span style="visibility: hidden">我要报名</span>
+    </div>
+</div>
+<img class="share-tips js-with-shade" src="/v1/img/share.png" alt=""/>
+<script type="text/html" id="main-tpl">
+    <? var data = this.data;?>
+    <div class="main">
+        <div class="part1">
+            <div class="title-area">
+                <div class="title"><?=data.title?></div>
+                <div class="store">
+                    <div style="visibility: hidden;padding-bottom: 20%">藏</div>
+                    <span>收藏</span>
+                </div>
+            </div>
+
+            <div class="label firstLabel"><?=+data.salary + "元/" + (data.salary_unit_label || "?")?></div>
+            <div class="label" style="<?= this.onlineTask ? 'border-right:0;' : ''?>">
+                <?=data.clearance_period_label?>
+            </div>
+            <? if (!this.onlineTask) {?>
+            <div class="label" style="border: 0">
+                已报名：<span style="color:#00b966"><?=data.got_quantity?></span>/<?=data.need_quantity?>人
+            </div>
+            <? } ?>
+        </div>
+        <div class="part2">
+            <section>
+                <table class="important-detail">
+                    <? if (data.requirements) {?>
+                    <tr>
+                        <td>要求：</td>
+                        <td><?=data.requirements?></td>
+                    </tr>
+                    <? } ?>
+                    <tr>
+                        <td>日期：</td>
+                        <td>
+                            <? if (data.is_longterm == 1) {?>
+                            长期兼职
+                            <? } else { ?>
+                            <?=data.from_date.substr(data.from_date.indexOf("-") + 1) + " 至 " + data.to_date.substr(data.to_date.indexOf("-") + 1)?>
+                            <? } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <? if (this.onlineTask) {?>
+                        <td style="min-width: 5rem;">申请条件：</td>
+                        <td><?=data.requirement?></td>
+                        <? } else {?>
+                        <td>时间：</td>
+                        <td>
+                            <? if (data.is_allday == 1) { ?>
+                            不限工作时间
+                            <? } else {?>
+                            <? if (data.from_time) {?>
+                            <?=data.from_time.substring(0, data.from_time.lastIndexOf(":")) + "-" + data.to_time.substring(0, data.to_time.lastIndexOf(":"))?>
+                            <? } ?>
+                            <? } ?>
+
+                        </td>
+                        <? } ?>
+                    </tr>
+                    <tr>
+                        <? if (this.onlineTask) {?>
+                        <td style="min-width: 5rem;">审核周期：</td>
+                        <td><?=data.onlinejob.audit_cycle?>天</td>
+                        <? } else {?>
+                        <td>地址：</td>
+                        <td>
+                            <? data.addresses.forEach(function(e, i){?>
+                                <?
+                                    var ad = [];
+                                    e.title && ad.push(e.title);
+                                    e.address && ad.push(e.address);
+                                ?>
+                                <?if (i > 1) {?>
+                            <span class="more-address" style="display: none"><?=e.title + '，' + e.address + "；"?> </span>
+                                <? } else {?>
+                            <span><?=e.title + '，' + e.address + "；"?> </span>
+                                <? } ?>
+
+                            <? }); ?>
+                            <?if(data.addresses.length > 2) {?>
+                            <span class="more-address-btn" style="color: #00b966;">查看更多 ></span>
+                            <? } ?>
+                        </td>
+                        <? } ?>
+                    </tr>
+                </table>
+            </section>
+        </div>
+        <? if(data.tasktime && data.tasktime.length) {?>
+        <div class="part4">
+            <div class="sub-title secure-info">兼职时间</div>
+            <p class="info">
+                <table class="job-time-table" >
+                    <tr>
+                        <td class="table-head"></td>
+                        <td class="week-num table-head">周一</td>
+                        <td class="week-num table-head">周二</td>
+                        <td class="week-num table-head">周三</td>
+                        <td class="week-num table-head">周四</td>
+                        <td class="week-num table-head">周五</td>
+                        <td class="week-num table-head">周六</td>
+                        <td class="week-num table-head">周日</td>
+                    </tr>
+                    <? var tempTime = ["上午","中午","下午"];
+                       var tempTimeCode = ["morning","afternoon","evening"];
+                    ?>
+                    <? for(var i = 0; i < 3; i++) { ?>
+                    <tr>
+                        <td class="table-head"><?=tempTime[i]?></td>
+                        <? data.tasktime.forEach(function(ele) { ?>
+                        <td class="date-time ">
+                            <? if(ele[tempTimeCode[i]]) { ?>
+                                √
+                            <? } ?>
+                        </td>
+                        <? }); ?>
+                    </tr>
+                    <? } ?>
+
+                </table>
+            </p>
+        </div>
+        <? } ?>
+        <div class="part4 job-content-wrap">
+            <div class="sub-title job-content">
+                <?=this.onlineTask ? '任务介绍' : '工作内容'?>
+            </div>
+            <p class="info">
+                <?=data.detail?>
+            </p>
+        </div>
+        <? if (!this.onlineTask) {?>
+        <div class="part3">
+            <div class="sub-part">
+                <div class="sub-title company-info">公司信息</div>
+                <p class="info">
+                    <?if(data.xcompany_name){?><?=data.xcompany_name || ''?> <br/><?}?>
+                </p>
+
+            </div>
+        </div>
+        <? } ?>
+        <div class="part4">
+            <div class="sub-title secure-info">求职说明</div>
+            <p class="info">
+                如果您在求职过程中，遇到企业无理要求付押金，或者工作内容与实际发布内容不符，请与我们及时联系。我们会及时处理解决，将您的损失降到最低。<a href="tel:01084991662">举报投诉电话：01084991662</a>
+            </p>
+        </div>
+        <img src="/v1/img/job/promise.png" alt="承诺：上岗快、全免费、敢赔付" style="width: 100%;margin-bottom: 56px;"/>
+
+    </div>
+</script>
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white" style="margin-top: 15%;">
+		<path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+		<path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+			<animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s" repeatCount="indefinite" />
+		</path>
+	</svg>
+
+	<div class="init-shade-text">
+		加载中
+	</div>
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="title">提示</div>
+	<div class="content">
+		<table class="content-table">
+			<tr>
+				<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+				<td class="content-text"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="alert-widget-btn"></div>
+	<div class="close-alert-dialog">x</div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+
+<script src="/v1/js_combo_min/job/job-detail.js" data-main="job/job-detail" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>职位举报</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/job/report.css'/>
+
+</head>
+<body>
+<!--
+<div id="wechat-top-bar">
+    <div id="page-back">
+        <span style="visibility: hidden"><</span>
+    </div>
+    职位举报
+    <a id="index-page" href="/v1/view/index.html">首页</a>
+</div>
+<div class="we-chat-top-bar-placeholder">
+
+</div>-->
+
+<textarea class="content" placeholder="任何意见和问题，请填入此处，我们会及时与您联系"></textarea>
+<input class="tel" type="tel" placeholder="请输入您的联系方式">
+</input>
+<div class="btn-submit">提交</div>
+
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+	<img class="init-shade-img" src="/v1/img/loading2.png" alt=""/>
+	<div class="init-shade-text">
+		加载中
+	</div>
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="title">提示</div>
+	<div class="content">
+		<table class="content-table">
+			<tr>
+				<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+				<td class="content-text"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="alert-widget-btn"></div>
+	<div class="close-alert-dialog">x</div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+
+<script src="/v1/js_combo_min/job/report.js" data-main="job/report" type="text/javascript"></script>
+</body>
+</html>

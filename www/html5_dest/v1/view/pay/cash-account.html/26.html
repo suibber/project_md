@@ -1,0 +1,197 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>现金账户</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = (window.MDDNative&&window.MDDNative.baseUrl()) ? window.MDDNative.baseUrl() : apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "mdd:///v1/",
+            picUrl : "/v1/" + "img/"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        if (window.seajs) {
+            seajs.config({
+                base: "/v1/js_combo_min/",
+                alias: {
+                    "zepto" : "third_party/zepto.js",
+                    "zepto-ext" : "widget/zepto-ext.js"
+                }
+            })
+        }
+
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/pay/cash-account.css'/>
+
+</head>
+<body>
+<div class="mdd-main">
+    <div class="top">
+        <div class="top-info">账户总收入（元）</div>
+        <div class="top-total-income">-</div>
+        <a href="/v1/view/pay/wechat-withdraw-info.html" class="top-tips">如何提现?</a>
+    </div>
+    <div class="nav">
+        <div class="nav-item nav-item-act js-nav-item-balance">
+            <div class="nav-item-title">可提现</div>
+            <div class="nav-item-money nav-item-money-act">-</div>
+        </div>
+        <div class="nav-item js-nav-item-doing">
+            <div class="nav-item-title">提现中</div>
+            <div class="nav-item-money">-</div>
+        </div>
+        <div class="nav-item js-nav-item-success">
+            <div class="nav-item-title">已提现</div>
+            <div class="nav-item-money">-</div>
+        </div>
+    </div>
+    <div class="settlement-list settlement-list-act">
+        <div class="withdraw-ph">
+            <div>ph</div>
+        </div>
+    </div>
+    <div class="settlement-list ">
+
+    </div>
+    <div class="settlement-list ">
+        <div class="withdraw-ph">
+            <div>ph</div>
+        </div>
+    </div>
+    <div class="no-settlement-list">
+        <div>账户真是空空如也！</div>
+        <a href="/v1/view/index.html">快去做兼职赚钱 ></a>
+    </div>
+
+    <div class="withdraw">
+        <div class="withdraw-tips">可提现：<span class="withdraw-tips-money">-</span></div>
+        <div class="withdraw-btn withdraw-btn-disable">提现</div>
+    </div>
+</div>
+
+<script type="text/html" id="settlement-list-tpl">
+    <?this.list.forEach(function(e) {?>
+    <div class="list-item">
+        <div class="list-item-desc">
+            <div class="list-item-desc-title"><?=e.note?></div>
+            <div class="list-item-desc-time"><?=e.date?></div>
+        </div>
+        <div class="list-item-money"><span style="font-size: 10px">￥</span><?=e.value?></div>
+    </div>
+    <? });?>
+
+</script>
+<!--这里的类都写到base.css里-->
+<!--页面加载的时候初始化遮罩-->
+<div class="init-shade">
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="white" style="margin-top: 15%;">
+		<path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+		<path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+			<animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s" repeatCount="indefinite" />
+		</path>
+	</svg>
+
+	<div class="init-shade-text">
+		加载中
+	</div>
+</div>
+<div class="shade-biz"></div>
+<div id="shade-widget"></div>
+<div id="toast-widget"></div>
+<div id="alert-widget">
+	<div class="title">提示</div>
+	<div class="content">
+		<table class="content-table">
+			<tr>
+				<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+				<td class="content-text"></td>
+			</tr>
+		</table>
+	</div>
+	<div class="alert-widget-btn"></div>
+	<div class="close-alert-dialog">x</div>
+</div>
+<div id="confirm-widget">
+	<div class="main-panel">
+		<div class="title">提示</div>
+		<div class="content">
+			<table class="content-table">
+				<tr>
+					<!--<td><img src="/v1/img/mascot.png" alt=""/></td>-->
+					<td class="content-text"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="btn">
+			<a class="btn-sure" >确定</a>
+			<a class="btn-cancel" >取消</a>
+		</div>
+		<div class="close-confirm-dialog">x</div>
+	</div>
+</div>
+<!--回到顶部-->
+<!--<span class="gotop" style="">
+	<img src="http://i.meilishuo.net/css/images/mobile/tuan/gotop.png" />
+</span>-->
+
+<script src="/v1/js_combo_min/pay/cash-account.js" data-main="pay/cash-account" type="text/javascript"></script>
+</body>
+</html>

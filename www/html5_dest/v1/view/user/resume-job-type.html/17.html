@@ -1,0 +1,22 @@
+<script type="text/html" id="job-type-list-tpl">
+<div class="sel-job-type right-widget">
+    <div class="type-tips">
+        请选择您擅长的兼职类型（可多选）！
+    </div>
+    <div class="type-content" id="type-content">
+        <div id="job-type-scroll-container" >
+        <? var as = this.as;?>
+        <? this.list.forEach(function(e) {?>
+        <div class="type-item <?=(as.indexOf(e.name) > -1 ? 'act' : '')?>" data-code="<?=e.id?>">
+            <?=e.name?>
+        </div>
+        <? }); ?>
+        <div class="job-type-submit-btn-ph">提交</div>
+        </div>
+    </div>
+    <div class="job-type-submit-btn">
+        提交
+    </div>
+
+</div>
+</script>

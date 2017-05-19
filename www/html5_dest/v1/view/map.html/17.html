@@ -1,0 +1,115 @@
+
+<!doctype html>
+<html >
+<head>
+    <meta charset="utf-8">
+    <title>地图定位</title>
+    <meta name="keywords" content="米多多、快速兼职" />
+    <meta name="description" content="米多多兼职" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="stylesheet" href="/v1/css/base.css"/>
+    <script type="text/javascript" src="/v1/js_min//third_party/sea.js" ></script>
+    
+    
+    <script>
+        window.cookie = {
+            get : function(key , cbk) {
+                var val = (function(){
+                    if (typeof key != 'string') key = key.toString();
+                    var arr = window.document.cookie.match('(?:^|;)\\s*' + key.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1') + '=([^;]*)');
+                    return arr ? decodeURIComponent(arr[1]) : undefined;
+                })();
+                if (cbk) return cbk(val)
+                return val
+            },
+            set : function(key, value, opts) {
+                opts = opts || {};
+                var line = key + '=' + encodeURIComponent(value);
+                //line += '; domain=.miduoduo.cn';
+                line += "; path=/";
+                if (opts.duration) {
+                    var expires = new Date;
+                    expires.setTime(expires.getTime() + (opts.duration * 1000));
+                    line += ';expires=' + expires.toGMTString();
+                }
+                return document.cookie = line + ';';
+            },
+            remove : function(key) {
+                return this.set(key, '', {duration: -1});
+            }
+        }
+        function apiDoamin(core) {
+            if (!/[a-zA-Z]/.test(location.host)) {
+                return  "http://" + core + ".guoyang.chongdd.cn";
+            }
+            var domainArr = location.host.split(".");
+            domainArr[0] = core;
+            return "http://" + domainArr.join(".");
+        }
+        window.MDDWeb = {};
+        window.miduoduo = {};
+        miduoduo.os  = {};
+        miduoduo.user = {};
+        miduoduo.api_baseurl = apiDoamin("api") + "/v1/";
+        miduoduo.os.wx = navigator.userAgent.indexOf('MicroMessenger') > -1;
+        miduoduo.basePath = {
+            base : "/v1/",
+            picUrl : "/v1/" + "img"
+        };
+
+        
+            miduoduo.os.app =  true;
+            miduoduo.user = JSON.parse(window.MDDNative.user());
+        
+
+        miduoduo.user.phone = miduoduo.user.username;
+
+        seajs.config({
+            base: "/v1/js_min/",
+            alias: {
+                "zepto" : "third_party/zepto.js",
+                "zepto-ext" : "widget/zepto-ext.js"
+            }
+        })
+    </script>
+
+<link rel='stylesheet' type='text/css' href='/v1/css/map.css'/>
+<script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=GB9AZpYwfhnkMysnlzwSdRqq&v=1.0"></script>
+<script>seajs.use('map')</script>
+</head>
+<body >
+<!--
+<div id="wechat-top-bar">
+    <div id="page-back">
+        <span style="visibility: hidden"><</span>
+    </div>
+    地图定位
+    <a id="index-page" href="/v1/view/index.html">首页</a>
+</div>
+<div class="we-chat-top-bar-placeholder">
+
+</div>-->
+
+<div id="map-search">
+    <div class="map-search-wrap"><input type="search" name="" class="map-search-input" placeholder="点此搜索地点"/></div>
+    <div class="map-search-btn">搜索</div>
+</div>
+<div id="mdd-map"></div>
+<div class="info">
+    附近地点
+</div>
+<div id="location-list"></div>
+<script type="text/html" id="location-list-tpl">
+    <ul>
+        <?this.data.forEach(function(e){?>
+        <li class="location-list-item"  data-lat="<?=e.point.lat?>" data-lng="<?=e.point.lng?>">
+            <div class="location-list-item-title"><?=e.title?></div>
+            <div class="location-list-item-address">地址：<?=e.address?></div>
+        </li>
+        <?});?>
+    </ul>
+</script>
+</body>
